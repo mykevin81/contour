@@ -476,6 +476,14 @@ func (p *HTTPProxyProcessor) computeHTTPProxy(proxy *contour_api_v1.HTTPProxy) {
 					return
 				}
 
+				var claimToHeaders []ClaimToHeaders
+				for _, claimToHeader := range jwtProvider.ClaimToHeaders {
+					claimToHeaders = append(claimToHeaders, ClaimToHeaders{
+						ClaimName:  claimToHeader.ClaimName,
+						HeaderName: claimToHeader.HeaderName,
+					})
+				}
+
 				svhost.JWTProviders = append(svhost.JWTProviders, JWTProvider{
 					Name:      jwtProvider.Name,
 					Issuer:    jwtProvider.Issuer,
@@ -492,7 +500,9 @@ func (p *HTTPProxyProcessor) computeHTTPProxy(proxy *contour_api_v1.HTTPProxy) {
 						},
 						CacheDuration: cacheDuration,
 					},
-					ForwardJWT: jwtProvider.ForwardJWT,
+					ForwardJWT:        jwtProvider.ForwardJWT,
+					PayloadInMetadata: jwtProvider.PayloadInMetadata,
+					ClaimToHeaders:    claimToHeaders,
 				})
 			}
 		}

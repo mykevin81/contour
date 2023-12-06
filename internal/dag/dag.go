@@ -796,11 +796,13 @@ type SecureVirtualHost struct {
 }
 
 type JWTProvider struct {
-	Name       string
-	Issuer     string
-	Audiences  []string
-	RemoteJWKS RemoteJWKS
-	ForwardJWT bool
+	Name              string
+	Issuer            string
+	Audiences         []string
+	RemoteJWKS        RemoteJWKS
+	ForwardJWT        bool
+	PayloadInMetadata string
+	ClaimToHeaders    []ClaimToHeaders
 }
 
 type RemoteJWKS struct {
@@ -808,6 +810,11 @@ type RemoteJWKS struct {
 	Timeout       time.Duration
 	Cluster       DNSNameCluster
 	CacheDuration *time.Duration
+}
+
+type ClaimToHeaders struct {
+	HeaderName string
+	ClaimName  string
 }
 
 // DNSNameCluster is a cluster that routes directly to a DNS

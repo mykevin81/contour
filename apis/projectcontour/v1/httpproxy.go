@@ -375,6 +375,14 @@ type JWTProvider struct {
 	// the JWT is not forwarded.
 	// +optional
 	ForwardJWT bool `json:"forwardJWT,omitempty"`
+
+	//Additional data added to JWT payload
+	// +optional
+	PayloadInMetadata string `json:"payload_in_metadata"`
+
+	// Additional claims added to JWT header
+	// +optional
+	ClaimToHeaders []ClaimToHeaders `json:"claimToHeaders"`
 }
 
 // RemoteJWKS defines how to fetch a JWKS from an HTTP endpoint.
@@ -416,6 +424,12 @@ type RemoteJWKS struct {
 	// +optional
 	// +kubebuilder:validation:Enum=auto;v4;v6
 	DNSLookupFamily string `json:"dnsLookupFamily,omitempty"`
+}
+
+type ClaimToHeaders struct {
+	HeaderName string `protobuf:"bytes,1,opt,name=header_name,json=headerName,proto3" json:"header_name,omitempty"`
+
+	ClaimName string `protobuf:"bytes,2,opt,name=claim_name,json=claimName,proto3" json:"claim_name,omitempty"`
 }
 
 // TLS describes tls properties. The SNI names that will be matched on
